@@ -42,8 +42,7 @@ const solveCaptcha = async (page) => {
 cron.schedule("*/5 * * * *", async () => {
   console.log("STARTING");
   const browser = await puppeteer.launch({
-    headless: false,
-    // executablePath: "chromium-browser",
+    executablePath: "chromium-browser",
   });
   const page = await browser.newPage();
 
