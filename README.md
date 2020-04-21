@@ -86,7 +86,7 @@ Rename `secrets-example.json` to `secrets.json`, and fill out the values.
 
 - **notifications:** the `send_to_email` is the address that will be notified upon finding delivery windows
 
-- **two_captcha_key:** sign up for [2captcha](https://2captcha.com/) account, and purchase
+- **two_captcha_key:** sign up for [2captcha](https://2captcha.com/) account, and purchase captchas by clicking "add funds". Copy your API key from the "Account Settings" section on the dashboard
 
 - **delivery_zip_code:** the zipcode you will have your amazon order delivered to
 
