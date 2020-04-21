@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@infosimples/node_two_captcha": "^1.0.2",
-    "chromedriver": "^2.12.0",
+    "chromedriver": "^2.26.1",
     "node-cron": "^2.0.3",
     "nodemailer": "^6.4.6",
     "puppeteer": "^2.1.1",
