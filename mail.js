@@ -13,10 +13,10 @@ const mailTransporter = nodemailer.createTransport(smtpConfig);
 
 const sendIt = async (filename, url) => {
   const mailOptions = {
-    from: "The Grocery Man <info@jamiewbuck.com>",
+    from: "Delivery Finder <info@jamiewbuck.com>",
     to: secrets.notifcations.send_to_email,
     subject: "Found New Delivery Windows",
-    text: "Grocery Apts",
+    text: "Found New Delivery Windows",
     html: `<a href="${url}" target="_blank">Click here to checkout</a>`,
     attachments: [
       {
