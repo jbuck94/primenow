@@ -3,15 +3,16 @@ const RecaptchaPlugin = require("puppeteer-extra-plugin-recaptcha");
 const Client = require("@infosimples/node_two_captcha");
 const cron = require("node-cron");
 const { sendIt } = require("./mail");
+const secrets = require("./secrets.json");
 
 // Declare your client
-const captchaclient = new Client("c7a387f2ce9f7a6910e07068b370bf20", {
+const captchaclient = new Client(secrets.two_captcha_key, {
   timeout: 60000,
   polling: 5000,
-  throwErrors: true
+  throwErrors: true,
 });
 
-const escapeXpathString = str => {
+const escapeXpathString = (str) => {
   const splitedQuotes = str.replace(/'/g, `', "'", '`);
   return `concat('${splitedQuotes}', '')`;
 };
@@ -29,7 +30,7 @@ const clickByText = async (page, text) => {
 
 const getFileName = () => `${new Date().toISOString()}.png`;
 
-const fuckACaptcha = async page => {
+const solveCaptcha = async (page) => {
   console.log("back to signin");
   await page.focus("#ap_password");
   await page.keyboard.type("WaIters098)(*");
@@ -42,7 +43,7 @@ const fuckACaptcha = async page => {
     );
 
     const response = await captchaclient.decode({
-      url: theimage
+      url: theimage,
     });
 
     await page.focus("#auth-captcha-guess");
@@ -50,14 +51,15 @@ const fuckACaptcha = async page => {
 
     await Promise.all([page.click("#signInSubmit"), page.waitForNavigation()]);
   } catch (e) {
-    console.log("2captchashit: ", e);
+    console.log("2captcha error: ", e);
   }
 };
 
-cron.schedule("*/5 * * * *",async () => {
+cron.schedule("*/1 * * * *", async () => {
   console.log("STARTING");
   const browser = await puppeteer.launch({
-    executablePath: "chromium-browser"
+    headless: false,
+    // executablePath: "chromium-browser",
   });
   const page = await browser.newPage();
 
@@ -68,24 +70,22 @@ cron.schedule("*/5 * * * *",async () => {
 
   // enter zip code and submit
   await page.focus("#lsPostalCode");
-  await page.keyboard.type("02134");
+  await page.keyboard.type(secrets.delivery_zip_code);
   await page.click(".postalCodeSearchButton");
 
   await Promise.all([
     page.click(".postalCodeSearchButton"),
-    page.waitForNavigation()
+    page.waitForNavigation(),
   ]);
 
-  console.log("moved to a", page.url());
+  console.log("moved to", page.url());
 
   await Promise.all([
-    page.click(
-      ".page_header_drop_menu_trigger__root__3JwZP.page_header_drop_menu_trigger__pullArrowLeft__2Ave_"
-    ),
-    page.waitForNavigation()
+    page.click("[class*='page_header_drop_menu_trigger__pullArrowLeft__']"),
+    page.waitForNavigation(),
   ]);
 
-  console.log("moved to b", page.url());
+  console.log("moved to", page.url());
 
   await page.focus("#ap_email");
   await page.keyboard.type("jamie.william.buck@gmail.com");
@@ -95,49 +95,58 @@ cron.schedule("*/5 * * * *",async () => {
 
   // first try
   if (page.url().includes("/signin")) {
-    await fuckACaptcha(page);
+    await solveCaptcha(page);
   }
 
   // second try
   if (page.url().includes("/signin")) {
-    await fuckACaptcha(page);
+    await solveCaptcha(page);
   }
 
   // 3 strike urrr out
   if (page.url().includes("/signin")) {
-    await fuckACaptcha(page);
+    await solveCaptcha(page);
   }
 
-  console.log("moved to c", page.url());
+  console.log("moved to", page.url());
 
   await Promise.all([
     page.click("[aria-label='Cart']"),
-    page.waitForNavigation()
+    page.waitForNavigation(),
   ]);
-  console.log("moved to d", page.url());
+  console.log("moved to", page.url());
 
-  await Promise.all([
-    page.click(".cart-checkout-button"),
-    page.waitForNavigation()
-  ]);
+  const emptyCartText = (await page.content()).match(
+    /Your Shopping Cart is empty./gi
+  );
 
-  console.log("moved to e", page.url());
+  if (emptyCartText) {
+    console.log("Your cart is empty");
+    return browser.close();
+  } else {
+    await Promise.all([
+      page.click(".cart-checkout-button"),
+      page.waitForNavigation(),
+    ]);
+  }
+
+  console.log("moved to", page.url());
 
   const noDeliveriesText = (await page.content()).match(
     /No delivery windows available. New windows are released throughout the day./gi
   );
 
   if (noDeliveriesText) {
-    console.log("shit outta luck");
-    await browser.close();
+    console.log("you're outta luck, no delivery windows");
+    return browser.close();
   } else {
-    console.log("lets goooo");
     await page.screenshot({
       path: `./tmp/${filename}`,
-      fullPage: true
+      fullPage: true,
     });
+    const currentURL = page.url();
     await browser.close();
 
-    await sendIt(filename);
+    await sendIt(filename, currentURL);
   }
 });
