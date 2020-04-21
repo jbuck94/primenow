@@ -8,31 +8,31 @@
    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
    ```
 
-2. Run brew update to make sure Homebrew is up to date.
+2. Run brew update to make sure Homebrew is up to date
 
    ```bash
    brew update
    ```
 
-3. Add Homebrew’s location to your \$PATH in your .bash_profile or .zshrc file.
+3. Add Homebrew’s location to your \$PATH in your .bash_profile or .zshrc file
 
    ```bash
    export PATH="/usr/local/bin:$PATH"
    ```
 
-4. Install [Node](https://nodejs.org/en/) (npm will be installed with Node):
+4. Install [Node](https://nodejs.org/en/) (npm will be installed with Node)
 
    ```bash
    brew install node
    ```
 
-5. Check your node version:
+5. Check your node version
 
    ```bash
    node -v
    ```
 
-6. Check your npm version:
+6. Check your npm version
 
    ```bash
    npm -v
@@ -92,19 +92,19 @@ Rename `secrets-example.json` to `secrets.json`, and fill out the values.
 
 ## Run The Job
 
-The final step is to start the chron job, which will continually run in the background, every 5 minutes.
+The final step is to start the chron job, which will continually run in the background, every 5 minutes
 
 ```bash
 pm2 run app.js
 ```
 
-To check that the project is running
+To check that the project is running, run
 
 ```bash
 pm2 list
 ```
 
-To see full metrics and logs
+To see full metrics and logs, run
 
 ```
 pm2 monit
