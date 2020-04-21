@@ -2,7 +2,7 @@
 
 ## Environment Set Up
 
-1. Install Homebrew.
+1. Install [Homebrew](https://brew.sh/)
 
    ```bash
    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -20,7 +20,7 @@
    export PATH="/usr/local/bin:$PATH"
    ```
 
-4. Install Node (npm will be installed with Node):
+4. Install [Node](https://nodejs.org/en/) (npm will be installed with Node):
 
    ```bash
    brew install node
@@ -40,13 +40,13 @@
 
    _Note:_ Node version should be greater than `10.0.0` and npm version should be greater than `6.0.0`
 
-7. Install Chromium
+7. Install [Chromium](https://www.chromium.org/)
 
    ```bash
    brew cask install chromium
    ```
 
-8. Install yarn
+8. Install [yarn](https://yarnpkg.com/)
 
    ```bash
    brew install yarn
@@ -68,7 +68,7 @@
    ```bash
    yarn install
    ```
-4. Install [PM2](https://pm2.keymetrics.io/), a daemon process process manager that will help you manage and keep your application online
+4. Install [PM2](https://pm2.keymetrics.io/), a daemon process process manager that will keep your application online
 
    ```bash
    yarn global add pm2
