@@ -11,13 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "@infosimples/node_two_captcha": "^1.0.2",
-    "chromedriver": "^2.26.1",
     "node-cron": "^2.0.3",
     "nodemailer": "^6.4.6",
     "puppeteer": "^2.1.1",
     "puppeteer-extra": "^3.1.9",
-    "puppeteer-extra-plugin-recaptcha": "^3.1.10",
-    "puppeteer-select": "^1.0.3",
-    "selenium-webdriver": "^2.44.0"
+    "puppeteer-extra-plugin-recaptcha": "^3.1.10"
   }
 }
