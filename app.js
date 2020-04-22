@@ -39,7 +39,7 @@ const solveCaptcha = async (page) => {
   }
 };
 
-cron.schedule("*/5 * * * *", async () => {
+cron.schedule("*/1 * * * *", async () => {
   console.log("STARTING");
   const browser = await puppeteer.launch({
     executablePath: "chromium-browser",
@@ -99,8 +99,14 @@ cron.schedule("*/5 * * * *", async () => {
   ]);
   console.log("moved to", page.url());
 
-  const emptyCartText = (await page.content()).match(
-    /Your Shopping Cart is empty./gi
+  const emptyCartText = await page.$eval(
+    "[data-testid='houdini-cart-empty-title']",
+    (elem) => {
+      return (
+        window.getComputedStyle(elem).getPropertyValue("display") !== "none" &&
+        elem.offsetHeight > 0
+      );
+    }
   );
 
   if (emptyCartText) {
@@ -108,7 +114,7 @@ cron.schedule("*/5 * * * *", async () => {
     return browser.close();
   } else {
     await Promise.all([
-      page.click(".cart-checkout-button"),
+      page.click(".cart-checkout-button a"),
       page.waitForNavigation(),
     ]);
   }
