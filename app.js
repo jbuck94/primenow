@@ -39,7 +39,7 @@ const solveCaptcha = async (page) => {
   }
 };
 
-cron.schedule("*/1 * * * *", async () => {
+cron.schedule("*/5 * * * *", async () => {
   console.log("STARTING");
   const browser = await puppeteer.launch({
     executablePath: "chromium-browser",
