@@ -71,9 +71,9 @@ cron.schedule("*/5 * * * *", async () => {
   console.log("moved to", page.url());
 
   await page.focus("#ap_email");
-  await page.keyboard.type("jamie.william.buck@gmail.com");
+  await page.keyboard.type("REDACTED");
   await page.focus("#ap_password");
-  await page.keyboard.type("WaIters098)(*");
+  await page.keyboard.type("REDACTED");
   await Promise.all([page.click("#signInSubmit"), page.waitForNavigation()]);
 
   // first try
